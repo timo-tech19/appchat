@@ -1,7 +1,48 @@
-import React from "react";
+import { useReducer, KeyboardEvent, FormEvent } from "react";
 import { Link } from "react-router-dom";
+import api from "../../api/api";
+
+interface SignUpUser {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+}
+
+const formReducer = (state: SignUpUser, event) => {
+  return {
+    ...state,
+    [event.target.name]: event.target.value,
+  };
+};
+
+const initialUserState = {
+  name: "",
+  email: "",
+  password: "",
+  passwordConfirm: "",
+};
 
 function Signup() {
+  // const [user, setUser] = useState(initialUserState);
+  const [formData, setFormData] = useReducer(formReducer, initialUserState);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
+    const { name, email, password, passwordConfirm } = formData;
+    if (!name.trim() || !email.trim() || !password || !passwordConfirm) {
+      return alert("Please fill in all fields");
+    }
+
+    if (password !== passwordConfirm) {
+      return alert("Passwords do not match");
+    }
+
+    const user = await api.account.create("unique()", email, password, name);
+    console.log(user);
+  };
+
   return (
     <div className='bg-light p-5 rounded-xl shadow-xl bg-opacity-70 w-[350px]'>
       <h3 className='text-text text-center'>Welcome to</h3>
@@ -9,7 +50,7 @@ function Signup() {
         <span>App</span>
         <span className='text-primary'>Chat</span>
       </h1>
-      <form className='flex flex-col'>
+      <form className='flex flex-col' onSubmit={handleSubmit}>
         <p className='text-text uppercase text-center mb-4'>Sign Up</p>
         <label htmlFor='name'>
           <input
@@ -18,17 +59,21 @@ function Signup() {
             type='text'
             name='name'
             id='name'
+            value={formData.name}
+            onChange={setFormData}
           />
         </label>
-        <label htmlFor='username'>
+        {/* <label htmlFor='username'>
           <input
             className='mb-4 rounded-full px-4 py-2 w-full placeholder:text-sm'
             placeholder='User Name'
             type='text'
             name='username'
             id='username'
+            value={formData.username}
+            onChange={setFormData}
           />
-        </label>
+        </label> */}
         <label htmlFor='email'>
           <input
             className='mb-4 rounded-full px-4 py-2 w-full placeholder:text-sm'
@@ -36,6 +81,8 @@ function Signup() {
             type='email'
             name='email'
             id='email'
+            value={formData.email}
+            onChange={setFormData}
           />
         </label>
         <label htmlFor='password'>
@@ -45,6 +92,8 @@ function Signup() {
             placeholder='Password'
             name='password'
             id='password'
+            value={formData.password}
+            onChange={setFormData}
           />
         </label>
         <label htmlFor='passwordConfirm'>
@@ -53,10 +102,15 @@ function Signup() {
             className='mb-4 rounded-full px-4 py-2 w-full placeholder:text-sm'
             placeholder='ConfirmPassword'
             name='passwordConfirm'
-            id='password'
+            id='passwordConfirm'
+            value={formData.passwordConfirm}
+            onChange={setFormData}
           />
         </label>
-        <button className='bg-primary text-light py-2 rounded-full'>
+        <button
+          type='submit'
+          className='bg-primary text-light py-2 rounded-full'
+        >
           Sign Up
         </button>
       </form>
