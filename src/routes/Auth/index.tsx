@@ -4,14 +4,14 @@ import branding from "../../assets/images/branding.svg";
 function Auth() {
   return (
     <main className='flex h-screen'>
-      <nav className='fixed w-screen'>
+      {/* <nav className='fixed w-screen'>
         <div className='container py-4'>
           <h1 className='text-3xl'>
             <span>App</span>
             <span className='text-primary'>Chat</span>
           </h1>
         </div>
-      </nav>
+      </nav> */}
       <section className='flex-1 flex justify-center items-center'>
         <div className='w-[600px] h-[430px] relative'>
           <h2 className='absolute top-10 left-10'>Post thougts</h2>
@@ -19,8 +19,9 @@ function Auth() {
           <h2 className='absolute bottom-0 right-0'>Start conversations</h2>
         </div>
       </section>
-      <section className='bg-primary flex-1'>Right</section>
-      {/* <Outlet /> */}
+      <section className='bg-primary flex flex-1 justify-center items-center'>
+        <Outlet />
+      </section>
     </main>
   );
 }
