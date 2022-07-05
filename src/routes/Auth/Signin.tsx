@@ -1,6 +1,28 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../helpers/useAuth";
 
 function Signin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async () => {
+    if (!email || !password) {
+      alert("Please fill in all fields");
+    }
+
+    try {
+      auth.signin(email, password);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong");
+    }
+  };
+
   return (
     <div className='bg-light p-5 rounded-xl shadow-xl bg-opacity-70 w-[350px]'>
       <h3 className='text-text text-center'>Welcome to</h3>
@@ -8,7 +30,7 @@ function Signin() {
         <span>App</span>
         <span className='text-primary'>Chat</span>
       </h1>
-      <form className='flex flex-col'>
+      <form className='flex flex-col' onSubmit={handleSubmit}>
         <p className='text-text uppercase text-center mb-4'>Sign In</p>
         <label htmlFor='email'>
           <input
@@ -17,6 +39,8 @@ function Signin() {
             type='email'
             name='email'
             id='email'
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </label>
         <label htmlFor='password'>
@@ -26,9 +50,14 @@ function Signin() {
             placeholder='Password'
             name='password'
             id='password'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </label>
-        <button className='bg-primary text-light py-2 rounded-full'>
+        <button
+          type='submit'
+          className='bg-primary text-light py-2 rounded-full'
+        >
           Sign In
         </button>
       </form>

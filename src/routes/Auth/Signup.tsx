@@ -1,6 +1,7 @@
-import { useReducer, KeyboardEvent, FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { useReducer, FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import useAuth from "../../helpers/useAuth";
 
 interface SignUpUser {
   name: string;
@@ -9,7 +10,7 @@ interface SignUpUser {
   passwordConfirm: string;
 }
 
-const formReducer = (state: SignUpUser, event) => {
+const formReducer = (state: SignUpUser, event: any) => {
   return {
     ...state,
     [event.target.name]: event.target.value,
@@ -24,8 +25,9 @@ const initialUserState = {
 };
 
 function Signup() {
-  // const [user, setUser] = useState(initialUserState);
+  const auth = useAuth();
   const [formData, setFormData] = useReducer(formReducer, initialUserState);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -39,8 +41,13 @@ function Signup() {
       return alert("Passwords do not match");
     }
 
-    const user = await api.account.create("unique()", email, password, name);
-    console.log(user);
+    try {
+      await auth.signup(name, email, password);
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+      alert("Something went wrong");
+    }
   };
 
   return (
