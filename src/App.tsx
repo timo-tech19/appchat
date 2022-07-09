@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Protect from "./components/Protect";
 import AuthProvider from "./helpers/AuthProvider";
+import useAuth from "./helpers/useAuth";
 import Auth from "./routes/Auth";
 import Signin from "./routes/Auth/Signin";
 import Signup from "./routes/Auth/Signup";

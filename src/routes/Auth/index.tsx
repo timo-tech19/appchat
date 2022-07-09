@@ -1,7 +1,14 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import branding from "../../assets/images/branding.svg";
 
 function Auth() {
+  const session = localStorage.getItem("session");
+  const location = useLocation();
+
+  if (session) {
+    return <Navigate to='/' state={{ from: location }} replace />;
+  }
+
   return (
     <main className='flex h-screen'>
       {/* <nav className='fixed w-screen'>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../helpers/useAuth";
 
@@ -9,18 +9,15 @@ function Signin() {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+
     if (!email || !password) {
-      alert("Please fill in all fields");
+      return alert("Please fill in all fields");
     }
 
-    try {
-      auth.signin(email, password);
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-      alert("Something went wrong");
-    }
+    const isSuccess = await auth.signin(email, password);
+    if (isSuccess) navigate("/");
   };
 
   return (

@@ -41,13 +41,8 @@ function Signup() {
       return alert("Passwords do not match");
     }
 
-    try {
-      await auth.signup(name, email, password);
-      navigate("/");
-    } catch (e) {
-      console.log(e);
-      alert("Something went wrong");
-    }
+    const isSuccess = await auth.signup(name, email, password);
+    if (isSuccess) navigate("/");
   };
 
   return (

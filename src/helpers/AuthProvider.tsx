@@ -3,9 +3,10 @@ import * as React from "react";
 import api from "../api/api";
 
 interface AuthContextType {
-  user: any;
-  signup: (name: string, email: string, password: string) => Promise<void>;
-  signin: (email: string, password: string) => void;
+  session: Models.Session;
+  setSession: React.Dispatch<any>;
+  signup: (name: string, email: string, password: string) => Promise<boolean>;
+  signin: (email: string, password: string) => Promise<boolean>;
   signout: (callback: VoidFunction) => void;
 }
 type Props = { children: React.ReactNode };
@@ -13,31 +14,36 @@ type Props = { children: React.ReactNode };
 export const AuthContext = React.createContext<AuthContextType>(null!);
 
 function AuthProvider({ children }: Props) {
-  const [user, setUser] = React.useState<any>(null);
+  const [session, setSession] = React.useState<any>(null);
 
-  const signup = async (name: string, email: string, password: string) => {
+  const createSession = async (email: string, password: string) => {
     try {
-      let data = await api.account.create("unique()", email, password, name);
-      setUser(data);
-    } catch (error) {
-      console.log(error.message);
-      alert("Something went wrong");
+      let data = await api.account.createSession(email, password);
+      setSession(data);
+      localStorage.setItem("session", JSON.stringify(data));
+      return true;
+    } catch (err) {
+      alert(err.message);
+      return false;
     }
   };
 
-  const signin = async (email: string, password: string) => {
+  const signup = async (name: string, email: string, password: string) => {
     try {
-      let data = await api.account.createSession(email, password);
-      console.log(data);
+      await api.account.create("unique()", email, password, name);
+      return createSession(email, password);
     } catch (error) {
-      console.log(error.message);
-      alert("Something went wrong");
+      alert(error.message);
     }
+  };
+
+  const signin = (email: string, password: string) => {
+    return createSession(email, password);
   };
 
   const signout = () => {};
 
-  let value = { signup, signin, signout, user };
+  let value = { signup, signin, signout, session, setSession };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

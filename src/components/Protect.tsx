@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../helpers/useAuth";
 
@@ -7,10 +7,11 @@ type Props = {
 };
 
 const Protect: FC<Props> = ({ children }) => {
-  let auth = useAuth();
+  // let auth = useAuth();
   let location = useLocation();
+  const session = JSON.parse(localStorage.getItem("session"));
 
-  if (!auth.user) {
+  if (!session) {
     return <Navigate to='/signup' state={{ from: location }} replace />;
   }
 
