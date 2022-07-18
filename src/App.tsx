@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+import Chats from "./components/Chats";
+import Feed from "./components/Feed";
 import Protect from "./components/Protect";
 import AuthProvider from "./helpers/AuthProvider";
 import useAuth from "./helpers/useAuth";
@@ -13,7 +15,10 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route element={<Protect />}>
-          <Route path='/' element={<Home />} />
+          <Route element={<Home />}>
+            <Route path='/' element={<Feed />} />
+            <Route path='chats' element={<Chats />} />
+          </Route>
         </Route>
         <Route element={<Auth />}>
           <Route path='signin' element={<Signin />} />

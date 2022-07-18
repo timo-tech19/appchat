@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import useAuth from "../helpers/useAuth";
 
 type Props = {
@@ -14,8 +14,7 @@ const Protect: FC<Props> = ({ children }) => {
   if (!session) {
     return <Navigate to='/signup' state={{ from: location }} replace />;
   }
-
-  return children;
+  return <Outlet />;
 };
 
 export default Protect;

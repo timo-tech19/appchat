@@ -1,12 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 function Home() {
   return (
     <main>
-      <h1>Welcome to AppChat</h1>
-      <nav>
-        <Link to='signup'>Sign up</Link>
-      </nav>
+      <Navbar />
+      <Outlet />
     </main>
   );
 }
