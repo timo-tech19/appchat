@@ -1,6 +1,5 @@
-import { useReducer, FormEvent } from "react";
+import { useReducer, FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../../api/api";
 import useAuth from "../../helpers/useAuth";
 
 interface SignUpUser {
@@ -28,10 +27,11 @@ function Signup() {
   const auth = useAuth();
   const [formData, setFormData] = useReducer(formReducer, initialUserState);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<Boolean>(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     const { name, email, password, passwordConfirm } = formData;
     if (!name.trim() || !email.trim() || !password || !passwordConfirm) {
       return alert("Please fill in all fields");
@@ -42,6 +42,7 @@ function Signup() {
     }
 
     const isSuccess = await auth.signup(name, email, password);
+    setLoading(false);
     if (isSuccess) navigate("/");
   };
 

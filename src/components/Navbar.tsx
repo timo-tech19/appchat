@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
+import useAuth from "../helpers/useAuth";
 
 function Navbar() {
+  const { user } = useAuth();
   return (
     <nav className='flex items-center justify-between px-10 py-5'>
       <div className='logo'>
@@ -10,6 +12,7 @@ function Navbar() {
         </h1>
       </div>
       <ul className='flex'>
+        <p className='mr-6'>Hello, {user?.displayName}</p>
         <li>
           <NavLink
             className={({ isActive }) =>

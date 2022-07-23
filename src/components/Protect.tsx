@@ -9,9 +9,9 @@ type Props = {
 const Protect: FC<Props> = ({ children }) => {
   // let auth = useAuth();
   let location = useLocation();
-  const session = JSON.parse(localStorage.getItem("session"));
+  const { user } = useAuth();
 
-  if (!session) {
+  if (!user) {
     return <Navigate to='/signup' state={{ from: location }} replace />;
   }
   return <Outlet />;

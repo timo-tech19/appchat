@@ -5,18 +5,21 @@ import useAuth from "../../helpers/useAuth";
 function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const auth = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
     if (!email || !password) {
       return alert("Please fill in all fields");
     }
 
     const isSuccess = await auth.signin(email, password);
+    setLoading(false);
     if (isSuccess) navigate("/");
   };
 
@@ -55,7 +58,7 @@ function Signin() {
           type='submit'
           className='bg-primary text-light py-2 rounded-full'
         >
-          Sign In
+          {loading ? "Please wait..." : "Sign In"}
         </button>
       </form>
       <p className='text-xs mt-2 text-text'>

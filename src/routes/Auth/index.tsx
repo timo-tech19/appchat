@@ -1,11 +1,12 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import branding from "../../assets/images/branding.svg";
+import useAuth from "../../helpers/useAuth";
 
 function Auth() {
-  const session = localStorage.getItem("session");
+  const { user } = useAuth();
   const location = useLocation();
 
-  if (session) {
+  if (user) {
     return <Navigate to='/' state={{ from: location }} replace />;
   }
 
