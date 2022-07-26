@@ -3,7 +3,16 @@ import { db } from "../api/api";
 
 export interface PostInput {
   content: string;
-  authorId: string;
+  authorName: string;
+  authorPhoto: string;
+}
+
+export interface Post {
+  id: string;
+  content: string;
+  authorName: string;
+  authorPhoto: string;
+  createdAt: string;
 }
 
 export const createPost = async (data: PostInput) => {
@@ -13,8 +22,14 @@ export const createPost = async (data: PostInput) => {
       createdAt: serverTimestamp(),
     });
     console.log("Document written with ID: ", docRef.id);
-    console.log(docRef);
   } catch (e) {
     console.error("Error adding document: ", e);
+  }
+};
+
+export const fetchPosts = async () => {
+  try {
+  } catch (e) {
+    console.error("Error fetching document: ", e);
   }
 };

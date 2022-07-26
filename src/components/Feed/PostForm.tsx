@@ -12,8 +12,12 @@ function PostForm() {
     e.preventDefault();
     setLoading(true);
     // create a post
-    await createPost({ content: post, authorId: user.uid });
-    // console.log(post);
+    await createPost({
+      content: post,
+      authorName: user.displayName,
+      authorPhoto: user.photoURL,
+    });
+    setPost("");
     setLoading(false);
   };
 
@@ -40,7 +44,7 @@ function PostForm() {
           </form>
         </div>
       </div>
-      <hr className='border-2 border-[#f5f5f5] my-5' />
+      <hr className='border-2 border-[#f5f5f5] mt-5' />
     </>
   );
 }
