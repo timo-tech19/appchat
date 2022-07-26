@@ -5,6 +5,7 @@ module.exports = {
       primary: "#00BFA6",
       light: "#fff",
       text: "#565656",
+      transparent: "transparent",
     },
     extend: {},
   },
