@@ -53,7 +53,10 @@ function AuthProvider({ children }: Props) {
     }
   };
 
-  const signout = async () => signOut(auth);
+  const signout = async () => {
+    setUser(null);
+    signOut(auth);
+  };
 
   let value = { signup, signout, signin, user, setUser };
 

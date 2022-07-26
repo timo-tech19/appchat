@@ -1,8 +1,15 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import useAuth from "../helpers/useAuth";
 
 function Navbar() {
-  const { user } = useAuth();
+  const { user, signout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    signout();
+    navigate("/signin");
+  };
+
   return (
     <nav className='flex items-center justify-between px-10 py-5'>
       <div className='logo'>
@@ -11,7 +18,7 @@ function Navbar() {
           <span className='text-primary'>Chat</span>
         </h1>
       </div>
-      <ul className='flex'>
+      <ul className='flex items-center'>
         <p className='mr-6'>Hello, {user?.displayName}</p>
         <li>
           <NavLink
@@ -33,6 +40,13 @@ function Navbar() {
             Chats
           </NavLink>
         </li>
+        <button
+          onClick={handleClick}
+          type='button'
+          className='text-primary border-2 border-primary px-4 py-2 rounded-lg ml-4'
+        >
+          Log out
+        </button>
       </ul>
     </nav>
   );
