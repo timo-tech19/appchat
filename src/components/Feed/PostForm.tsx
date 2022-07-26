@@ -1,12 +1,20 @@
 import { FormEvent, useState } from "react";
 import { FaUserCircle as User } from "react-icons/fa";
+import { createPost } from "../../helpers/posts";
+import useAuth from "../../helpers/useAuth";
 
 function PostForm() {
   const [post, setPost] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(post);
+    setLoading(true);
+    // create a post
+    await createPost({ content: post, authorId: user.uid });
+    // console.log(post);
+    setLoading(false);
   };
 
   return (
@@ -27,7 +35,7 @@ function PostForm() {
               type='submit'
               className='bg-primary px-6 py-2 rounded-md text-light mt-2 self-end'
             >
-              Post
+              {loading ? "Posting..." : "Post"}
             </button>
           </form>
         </div>
