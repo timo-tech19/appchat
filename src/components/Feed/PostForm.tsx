@@ -14,8 +14,11 @@ function PostForm() {
     // create a post
     await createPost({
       content: post,
-      authorName: user.displayName,
-      authorPhoto: user.photoURL,
+      author: {
+        name: user.displayName,
+        photoURL: user.photoURL,
+        id: user.uid,
+      },
     });
     setPost("");
     setLoading(false);

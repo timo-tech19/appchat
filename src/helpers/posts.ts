@@ -3,15 +3,19 @@ import { db } from "../api/api";
 
 export interface PostInput {
   content: string;
-  authorName: string;
-  authorPhoto: string;
+  author: Author;
+}
+
+export interface Author {
+  id: string;
+  name: string;
+  photoURL: string;
 }
 
 export interface Post {
   id: string;
   content: string;
-  authorName: string;
-  authorPhoto: string;
+  author: Author;
   createdAt: string;
 }
 
