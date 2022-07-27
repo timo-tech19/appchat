@@ -35,7 +35,7 @@ function Feed() {
           <PostItem key={post.id} post={post} />
         ))}
       </ul>
-      {posts.length === 0 ? (
+      {posts?.length === 0 ? (
         <p className='text-center mt-4 font-semibold'>No posts yet</p>
       ) : null}
     </section>

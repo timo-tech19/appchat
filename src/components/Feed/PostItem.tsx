@@ -3,17 +3,22 @@ import { BsChatDotsFill, BsHeart, BsHeartFill } from "react-icons/bs";
 import { Post } from "../../helpers/posts";
 import { FormEvent, useState } from "react";
 import { createMessage } from "../../helpers/messages";
+import useAuth from "../../helpers/useAuth";
 
 function PostItem({ post }: { post: Post }) {
   const [showMessageForm, setShowMessageForm] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
-    await createMessage(message, post.author.id);
+    setLoading(true);
+    await createMessage(message, post.content, post.author.id);
     // clear message and hide form
     setMessage("");
     setShowMessageForm(false);
+    setLoading(false);
   };
 
   return (
@@ -25,17 +30,19 @@ function PostItem({ post }: { post: Post }) {
           {post.createdAt} {post.createdAt && "ago"}
         </p>
         <p className='text-sm mt-2'>{post.content}</p>
-        <div className='mt-2 flex items-center'>
-          <BsChatDotsFill
-            color='#0080FF'
-            className='cursor-pointer'
-            onClick={() => setShowMessageForm((curState) => !curState)}
-          />
-          <div className='flex items-center'>
-            <BsHeart className='ml-4 cursor-pointer' color='#ff4500' />
-            {/* <span className='ml-2 text-sm text-[#ff4500]'>1</span> */}
+        {user.uid !== post.author.id ? (
+          <div className='mt-2 flex items-center'>
+            <BsChatDotsFill
+              color='#0080FF'
+              className='cursor-pointer'
+              onClick={() => setShowMessageForm((curState) => !curState)}
+            />
+            <div className='flex items-center'>
+              <BsHeart className='ml-4 cursor-pointer' color='#ff4500' />
+              {/* <span className='ml-2 text-sm text-[#ff4500]'>1</span> */}
+            </div>
           </div>
-        </div>
+        ) : null}
         <form
           className={`flex w-full mt-4 ${showMessageForm || "hidden"}`}
           onSubmit={sendMessage}
@@ -50,7 +57,7 @@ function PostItem({ post }: { post: Post }) {
             type='submit'
             className='p-2 bg-primary rounded-lg text-light ml-4'
           >
-            Send
+            {loading ? "Sending..." : "Send"}
           </button>
         </form>
       </div>
