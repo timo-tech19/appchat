@@ -1,8 +1,10 @@
 import {
   addDoc,
   collection,
+  doc,
   DocumentData,
   DocumentReference,
+  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -23,6 +25,14 @@ export interface MessageUser {
   id: string;
   name: string;
   photoUrl: string;
+}
+
+export interface Message {
+  content: string;
+  createdAt: string;
+  id: string;
+  replyTo: string;
+  sender: string;
 }
 
 export const createMessage = async (
@@ -76,4 +86,16 @@ export const createMessage = async (
     createdAt: serverTimestamp(),
     replyTo: postContent,
   });
+};
+
+export const getChat = async (id: string, cb) => {
+  const docRef = doc(db, "chats", id);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    cb({ id: docSnap.id, ...docSnap.data() });
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+  }
 };

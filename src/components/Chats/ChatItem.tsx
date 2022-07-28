@@ -14,7 +14,7 @@ function ChatItem({ chat }: { chat: Chat }) {
   return (
     <li>
       <NavLink
-        to={`/chat/${chat.id}`}
+        to={`/chats/${chat.id}`}
         className='flex bg-[#f5f5f5] rounded-lg items-center p-2 mb-2 hover:bg-[#f1f1f1]'
       >
         <User size={"2.5em"} />
