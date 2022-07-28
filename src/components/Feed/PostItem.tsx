@@ -14,8 +14,7 @@ function PostItem({ post }: { post: Post }) {
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await createMessage(message, post.content, post.author.id);
-    // clear message and hide form
+    await createMessage(message, post.content, post.author);
     setMessage("");
     setShowMessageForm(false);
     setLoading(false);

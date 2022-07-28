@@ -9,7 +9,7 @@ export interface PostInput {
 export interface Author {
   id: string;
   name: string;
-  photoURL: string;
+  photoUrl: string;
 }
 
 export interface Post {

@@ -1,11 +1,39 @@
 import ChatItem from "./ChatItem";
 import { FaPaperPlane, FaUserCircle as User } from "react-icons/fa";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "../../api/api";
+import { useEffect, useState } from "react";
+import { formatDistance } from "date-fns";
+import { Chat } from "../../helpers/messages";
 
 function Chats() {
+  const [chats, setChats] = useState<Chat[]>([]);
+
+  const q = query(collection(db, "chats"), orderBy("updatedAt", "desc"));
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const chats = [];
+      querySnapshot.forEach((doc) => {
+        chats.push({
+          id: doc.id,
+          ...doc.data(),
+          updatedAt: formatDistance(doc.data().updatedAt?.toDate(), new Date()),
+        });
+      });
+      // console.log(chats);
+      setChats(chats);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <div className='max-w-[1280px] mx-auto px-2 flex'>
       <ul className='w-1/4'>
-        <ChatItem />
+        {chats?.map((chat) => (
+          <ChatItem key={chat.id} chat={chat} />
+        ))}
       </ul>
       <div className='flex flex-col flex-1 ml-4 bg-[#f5f5f5] rounded-lg p-4 h-[82vh]'>
         <div className='border-b-2 border-text border-opacity-10 flex items-center pb-4'>
