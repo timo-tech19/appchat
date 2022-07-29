@@ -1,15 +1,27 @@
 import ChatItem from "./ChatItem";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../api/api";
 import { useEffect, useState } from "react";
 import { formatDistance } from "date-fns";
 import { Chat } from "../../helpers/messages";
 import { Outlet } from "react-router-dom";
+import useAuth from "../../helpers/useAuth";
 
 function Chats() {
   const [chats, setChats] = useState<Chat[]>([]);
+  const { user } = useAuth();
 
-  const q = query(collection(db, "chats"), orderBy("updatedAt", "desc"));
+  const q = query(
+    collection(db, "chats"),
+    where("participantIds", "array-contains", user.uid),
+    orderBy("updatedAt", "desc")
+  );
 
   useEffect(() => {
     const unsubscribe = onSnapshot(q, (querySnapshot) => {

@@ -43,17 +43,23 @@ export const createMessage = async (
   // find chat were poster and responder are participants
   const chatsRef = collection(db, "chats");
   let chatRef: DocumentReference<DocumentData>;
+
+  //TODO: find chat where the active user and poster are participants
   const chatQuery = query(
     chatsRef,
-    where("participantIds", "array-contains-any", [
-      auth.currentUser.uid,
-      postAuthor.id,
-    ])
+    where("participantIds", "array-contains", auth.currentUser.uid)
   );
 
   const getChatSnapshot = await getDocs(chatQuery);
+  let chats = [];
+  getChatSnapshot.forEach((doc) => {
+    chats.push({ id: doc.id, ...doc.data() });
+  });
+  const chat = chats.find((chat) => {
+    return chat.participantIds.includes(postAuthor.id);
+  });
 
-  if (getChatSnapshot.empty) {
+  if (!chat) {
     // create chat is no chat
     chatRef = await addDoc(collection(db, "chats"), {
       participantIds: [auth.currentUser.uid, postAuthor.id],
@@ -70,9 +76,7 @@ export const createMessage = async (
     });
   } else {
     // update last message for existing chat
-    getChatSnapshot.forEach((doc) => {
-      chatRef = doc.ref;
-    });
+    chatRef = doc(db, "chats", chat.id);
     await updateDoc(chatRef, {
       lastMessage: msg,
       updatedAt: serverTimestamp(),
@@ -97,5 +101,25 @@ export const getChat = async (id: string, cb) => {
   } else {
     // doc.data() will be undefined in this case
     console.log("No such document!");
+  }
+};
+
+export const sendMessageInChat = async (msg: string, chatId: string) => {
+  try {
+    // update chat
+    const chatRef = doc(db, "chats", chatId);
+    await updateDoc(chatRef, {
+      lastMessage: msg,
+      updatedAt: serverTimestamp(),
+    });
+
+    // add message to subcollection(messages) of chat
+    await addDoc(collection(db, "chats", chatId, "messages"), {
+      content: msg,
+      sender: auth.currentUser.uid,
+      createdAt: serverTimestamp(),
+    });
+  } catch (error) {
+    console.log(error);
   }
 };

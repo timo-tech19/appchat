@@ -23,7 +23,10 @@ function ChatItem({ chat }: { chat: Chat }) {
             <span className='font-semibold text-base'>{otherUser.name}</span>
             <span className='text-text text-xs'>{chat.updatedAt}</span>
           </p>
-          <p className='text-sm text-text'>{chat.lastMessage}</p>
+          <p className='text-sm text-text'>
+            {chat.lastMessage.slice(0, 30) +
+              (chat.lastMessage.length > 30 ? "..." : "")}
+          </p>
         </div>
       </NavLink>
     </li>
