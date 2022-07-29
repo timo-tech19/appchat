@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Chats from "./components/Chats";
+import ChatBox from "./components/Chats/ChatBox";
 import Feed from "./components/Feed";
 import Protect from "./components/Protect";
 import AuthProvider from "./helpers/AuthProvider";
@@ -17,7 +18,9 @@ function App() {
         <Route element={<Protect />}>
           <Route element={<Home />}>
             <Route path='/' element={<Feed />} />
-            <Route path='chats' element={<Chats />} />
+            <Route path='chats' element={<Chats />}>
+              <Route path=':id' element={<ChatBox />} />
+            </Route>
           </Route>
         </Route>
         <Route element={<Auth />}>
