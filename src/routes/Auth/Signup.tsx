@@ -114,7 +114,7 @@ function Signup() {
           type='submit'
           className='bg-primary text-light py-2 rounded-full'
         >
-          Sign Up
+          {loading ? "Please wait..." : "Sign Up"}
         </button>
       </form>
       <p className='text-xs mt-2 text-text'>
