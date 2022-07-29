@@ -7,6 +7,7 @@ function MessageForm({ chatId }) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (message.trim() === "") return;
     sendMessageInChat(message, chatId);
     setMessage("");
   };

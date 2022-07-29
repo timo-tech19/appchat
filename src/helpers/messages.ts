@@ -24,7 +24,7 @@ export interface Chat {
 export interface MessageUser {
   id: string;
   name: string;
-  photoUrl: string;
+  photoURL: string;
 }
 
 export interface Message {

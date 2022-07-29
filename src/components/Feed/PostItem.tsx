@@ -13,6 +13,7 @@ function PostItem({ post }: { post: Post }) {
 
   const sendMessage = async (e: FormEvent) => {
     e.preventDefault();
+    if (message.trim() === "") return;
     setLoading(true);
     await createMessage(message, post.content, post.author);
     setMessage("");
