@@ -1,8 +1,5 @@
-import { doc, getDoc } from "firebase/firestore";
-import { useEffect } from "react";
 import { FaUserCircle as User } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
-import { db } from "../../api/api";
 import { Chat } from "../../helpers/messages";
 import useAuth from "../../helpers/useAuth";
 

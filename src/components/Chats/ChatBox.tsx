@@ -8,7 +8,7 @@ import {
   query,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { FaPaperPlane, FaUserCircle as User } from "react-icons/fa";
+import { FaUserCircle as User } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { db } from "../../api/api";
 import { Chat, getChat, Message, MessageUser } from "../../helpers/messages";

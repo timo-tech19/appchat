@@ -1,5 +1,5 @@
 import { FaUserCircle as User } from "react-icons/fa";
-import { BsChatDotsFill, BsHeart, BsHeartFill } from "react-icons/bs";
+import { BsChatDotsFill, BsHeart } from "react-icons/bs";
 import { Post } from "../../helpers/posts";
 import { FormEvent, useState } from "react";
 import { createMessage } from "../../helpers/messages";
@@ -36,10 +36,10 @@ function PostItem({ post }: { post: Post }) {
               className='cursor-pointer'
               onClick={() => setShowMessageForm((curState) => !curState)}
             />
-            <div className='flex items-center'>
+            {/* <div className='flex items-center'>
               <BsHeart className='ml-4 cursor-pointer' color='#ff4500' />
-              {/* <span className='ml-2 text-sm text-[#ff4500]'>1</span> */}
-            </div>
+              <span className='ml-2 text-sm text-[#ff4500]'>1</span>
+            </div> */}
           </div>
         ) : null}
         <form

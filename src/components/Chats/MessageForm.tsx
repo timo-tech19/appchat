@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { sendMessageInChat } from "../../helpers/messages";
 
