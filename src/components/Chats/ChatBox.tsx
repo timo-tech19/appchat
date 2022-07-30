@@ -1,16 +1,10 @@
 import { formatDistance } from "date-fns";
-import {
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { collection, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { FaUserCircle as User } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { db } from "../../api/api";
+import { useRealtimeDocs } from "../../helpers";
 import { Chat, getChat, Message, MessageUser } from "../../helpers/messages";
 import useAuth from "../../helpers/useAuth";
 import MessageForm from "./MessageForm";
@@ -29,22 +23,21 @@ function ChatBox() {
     orderBy("createdAt", "asc")
   );
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+  useRealtimeDocs(
+    q,
+    (snapshot) => {
       const messages = [];
-      querySnapshot.forEach((doc) => {
+      snapshot.forEach((doc) => {
         messages.push({
           id: doc.id,
           ...doc.data(),
           createdAt: formatDistance(doc.data().createdAt?.toDate(), new Date()),
         });
       });
-      //   console.log(messages);
       setMessages(messages);
-    });
-
-    return () => unsubscribe();
-  }, [id]);
+    },
+    [id]
+  );
 
   useEffect(() => {
     getChat(id, setChat);
