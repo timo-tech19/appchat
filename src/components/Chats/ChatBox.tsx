@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { FaUserCircle as User } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { db } from "../../api/api";
-import { useRealtimeDocs } from "../../helpers";
-import { Chat, getChat, Message, MessageUser } from "../../helpers/messages";
+import { AppUser, useRealtimeDocs } from "../../helpers";
+import { Chat, getChat, Message } from "../../helpers/messages";
 import useAuth from "../../helpers/useAuth";
 import MessageForm from "./MessageForm";
 
@@ -15,7 +15,7 @@ function ChatBox() {
   const [chat, setChat] = useState<Chat>(null);
   const [messages, setMessages] = useState<Message[]>(null);
   const otherUser = chat?.participants?.find(
-    (_user: MessageUser) => _user.id !== user.uid
+    (_user: AppUser) => _user.id !== user.uid
   );
 
   const q = query(

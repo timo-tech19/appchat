@@ -1,21 +1,16 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { AppUser } from ".";
 import { db } from "../api/api";
 
 export interface PostInput {
   content: string;
-  author: Author;
-}
-
-export interface Author {
-  id: string;
-  name: string;
-  photoURL: string;
+  author: AppUser;
 }
 
 export interface Post {
   id: string;
   content: string;
-  author: Author;
+  author: AppUser;
   createdAt: string;
 }
 
