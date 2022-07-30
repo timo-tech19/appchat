@@ -31,8 +31,8 @@ function Chats() {
   });
 
   return (
-    <div className='max-w-[1280px] mx-auto px-2 flex'>
-      <ul className='w-1/4'>
+    <div className='max-w-[1280px] mx-auto px-2 md:flex'>
+      <ul className='md:w-1/4 flex  md:block'>
         {chats?.map((chat) => (
           <ChatItem key={chat.id} chat={chat} />
         ))}
