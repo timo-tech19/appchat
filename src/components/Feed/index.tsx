@@ -24,7 +24,7 @@ function Feed() {
   });
 
   return (
-    <section className='w-3/5 mx-auto'>
+    <section className='w-full md:w-3/5 md:mx-auto px-5'>
       <PostForm />
       <ul>
         {posts?.map((post) => (
