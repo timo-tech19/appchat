@@ -48,43 +48,45 @@ function ChatBox() {
       <div className='border-b-2 border-text border-opacity-10 flex items-center pb-4'>
         <p className='ml-4 text-xl uppercase'>{otherUser?.name}</p>
       </div>
-      <ul className='py-4 flex-1 flex flex-col justify-end overflow-y-scroll'>
-        {messages?.map((message) => {
-          return message.sender === user.uid ? (
-            <li
-              key={message.id}
-              className='flex mb-4 text-right self-end w-2/3'
-            >
-              <div className='ml-2 flex flex-col items-end w-full'>
-                {message.replyTo && (
-                  <p className='text-text text-sm'>
-                    Reply To: {message.replyTo}
+      <div className='flex-1 overflow-y-scroll'>
+        <ul className='py-4 flex flex-col justify-end'>
+          {messages?.map((message) => {
+            return message.sender === user.uid ? (
+              <li
+                key={message.id}
+                className='flex mb-4 text-right self-end w-2/3'
+              >
+                <div className='ml-2 flex flex-col items-end w-full'>
+                  {message.replyTo && (
+                    <p className='text-text text-sm'>
+                      Reply To: {message.replyTo}
+                    </p>
+                  )}
+                  <p className='bg-light text-left p-2 rounded-xl rounded-br-none w-fit self-end'>
+                    {message.content}
                   </p>
-                )}
-                <p className='bg-light text-left p-2 rounded-xl rounded-br-none w-fit self-end'>
-                  {message.content}
-                </p>
-                <p className='text-text text-xs'>{message.createdAt}</p>
-              </div>
-            </li>
-          ) : (
-            <li key={message.id} className='flex mb-4 w-2/3'>
-              <User size={"2.5em"} />
-              <div className='ml-2 flex flex-col flex-1'>
-                {message.replyTo && (
-                  <p className='text-text text-sm'>
-                    Reply To: {message.replyTo}
+                  <p className='text-text text-xs'>{message.createdAt}</p>
+                </div>
+              </li>
+            ) : (
+              <li key={message.id} className='flex mb-4 w-2/3'>
+                <User size={"2.5em"} />
+                <div className='ml-2 flex flex-col flex-1'>
+                  {message.replyTo && (
+                    <p className='text-text text-sm'>
+                      Reply To: {message.replyTo}
+                    </p>
+                  )}
+                  <p className='bg-primary text-light p-2 rounded-xl rounded-bl-none self-start'>
+                    {message.content}
                   </p>
-                )}
-                <p className='bg-primary text-light p-2 rounded-xl rounded-bl-none self-start'>
-                  {message.content}
-                </p>
-                <p className='text-text text-xs'>{message.createdAt}</p>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+                  <p className='text-text text-xs'>{message.createdAt}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
       <MessageForm chatId={chat?.id} />
     </div>
   );
