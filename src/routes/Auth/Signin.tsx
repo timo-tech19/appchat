@@ -67,6 +67,9 @@ function Signin() {
           Sign Up Here
         </Link>
       </p>
+      <p className='text-xs mt-2'>
+        Demo account - email: test@example.com password: test1234
+      </p>
     </div>
   );
 }

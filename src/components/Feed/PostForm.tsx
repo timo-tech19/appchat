@@ -10,6 +10,8 @@ function PostForm() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (post.trim() === "") return;
     setLoading(true);
     // create a post
     await createPost({

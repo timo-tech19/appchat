@@ -1,7 +1,8 @@
 import { formatDistance } from "date-fns";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { collection, orderBy, query } from "firebase/firestore";
+import { useState } from "react";
 import { db } from "../../api/api";
+import { useRealtimeDocs } from "../../helpers";
 import { Post } from "../../helpers/posts";
 import PostForm from "./PostForm";
 import PostItem from "./PostItem";
@@ -10,25 +11,20 @@ function Feed() {
   const [posts, setPosts] = useState<Post[]>(null);
 
   const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-
-  useEffect(() => {
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const posts = [];
-      querySnapshot.forEach((doc) => {
-        posts.push({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: formatDistance(doc.data().createdAt?.toDate(), new Date()),
-        });
+  useRealtimeDocs(q, (snapshot) => {
+    const docs = [];
+    snapshot.forEach((doc) => {
+      docs.push({
+        id: doc.id,
+        ...doc.data(),
+        createdAt: formatDistance(doc.data().createdAt?.toDate(), new Date()),
       });
-      setPosts(posts);
     });
-
-    return () => unsubscribe();
-  }, []);
+    setPosts(docs);
+  });
 
   return (
-    <section className='w-3/5 mx-auto'>
+    <section className='w-full md:w-3/5 md:mx-auto px-5'>
       <PostForm />
       <ul>
         {posts?.map((post) => (

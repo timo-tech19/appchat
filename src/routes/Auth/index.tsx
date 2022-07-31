@@ -12,16 +12,8 @@ function Auth() {
 
   return (
     <main className='flex h-screen'>
-      {/* <nav className='fixed w-screen'>
-        <div className='container py-4'>
-          <h1 className='text-3xl'>
-            <span>App</span>
-            <span className='text-primary'>Chat</span>
-          </h1>
-        </div>
-      </nav> */}
-      <section className='flex-1 flex justify-center items-center'>
-        <div className='w-[600px] h-[430px] relative'>
+      <section className='flex-1 md:flex justify-center items-center hidden'>
+        <div className='max-w-[600px] max-h-[430px] relative'>
           <h2 className='absolute top-10 left-10'>Post thougts</h2>
           <img className='w-full h-full' src={branding} alt='Branding' />
           <h2 className='absolute bottom-0 right-0'>Start conversations</h2>

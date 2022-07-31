@@ -11,20 +11,15 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import { AppUser } from ".";
 import { auth, db } from "../api/api";
 
 export interface Chat {
   id: string;
   lastMessage: string;
   participantIds: string[];
-  participants: MessageUser[];
+  participants: AppUser[];
   updatedAt: string;
-}
-
-export interface MessageUser {
-  id: string;
-  name: string;
-  photoUrl: string;
 }
 
 export interface Message {
@@ -38,7 +33,7 @@ export interface Message {
 export const createMessage = async (
   msg: string,
   postContent: string,
-  postAuthor: MessageUser
+  postAuthor: AppUser
 ) => {
   // find chat were poster and responder are participants
   const chatsRef = collection(db, "chats");

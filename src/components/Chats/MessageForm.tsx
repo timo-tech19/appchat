@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { sendMessageInChat } from "../../helpers/messages";
 
@@ -7,6 +7,7 @@ function MessageForm({ chatId }) {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (message.trim() === "") return;
     sendMessageInChat(message, chatId);
     setMessage("");
   };

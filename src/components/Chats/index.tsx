@@ -1,17 +1,12 @@
 import ChatItem from "./ChatItem";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, orderBy, query, where } from "firebase/firestore";
 import { db } from "../../api/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { formatDistance } from "date-fns";
 import { Chat } from "../../helpers/messages";
 import { Outlet } from "react-router-dom";
 import useAuth from "../../helpers/useAuth";
+import { useRealtimeDocs } from "../../helpers";
 
 function Chats() {
   const [chats, setChats] = useState<Chat[]>([]);
@@ -23,26 +18,21 @@ function Chats() {
     orderBy("updatedAt", "desc")
   );
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const chats = [];
-      querySnapshot.forEach((doc) => {
-        chats.push({
-          id: doc.id,
-          ...doc.data(),
-          updatedAt: formatDistance(doc.data().updatedAt?.toDate(), new Date()),
-        });
+  useRealtimeDocs(q, (snapshot) => {
+    const chats = [];
+    snapshot.forEach((doc) => {
+      chats.push({
+        id: doc.id,
+        ...doc.data(),
+        updatedAt: formatDistance(doc.data().updatedAt?.toDate(), new Date()),
       });
-      // console.log(chats);
-      setChats(chats);
     });
-
-    return () => unsubscribe();
-  }, []);
+    setChats(chats);
+  });
 
   return (
-    <div className='max-w-[1280px] mx-auto px-2 flex'>
-      <ul className='w-1/4'>
+    <div className='max-w-[1280px] mx-auto px-2 md:flex'>
+      <ul className='md:w-1/4 flex  md:block'>
         {chats?.map((chat) => (
           <ChatItem key={chat.id} chat={chat} />
         ))}
