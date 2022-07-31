@@ -44,7 +44,7 @@ function ChatBox() {
   }, [id]);
 
   return (
-    <div className='flex flex-col md:ml-4 bg-[#f5f5f5] rounded-lg p-4 h-[82vh]'>
+    <div className='flex flex-col flex-1 md:ml-4 bg-[#f5f5f5] rounded-lg p-4 h-[82vh]'>
       <div className='border-b-2 border-text border-opacity-10 flex items-center pb-4'>
         <p className='ml-4 text-xl uppercase'>{otherUser?.name}</p>
       </div>
